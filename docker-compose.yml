@@ -1,0 +1,32 @@
+version: '3'
+# networks:
+#   xxx_project:
+#     external: true
+volumes:
+  vendor:
+  node_modules:
+services:
+  nginx:
+    image: nginx:1.14-alpine
+    hostname: nginx.com
+    ports:
+      - '80:80'
+      # - '443:443'
+    environment:
+      - PHP_FPM_CONTAINER=php-fpm
+      - PHP_FPM_PORT=9000
+      - SRC_DIR_HOST=./src
+      - SRC_DIR_CONTAINTER=/var/www/src
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./log/nginx:/var/log/nginx
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: ./php
+    working_dir: ${SRC_DIR_CONTAINTER}
+    volumes:
+      - ${SRC_DIR_HOST}:${SRC_DIR_CONTAINTER}
+      - ./php/conf.d:/usr/local/etc/php/conf.d
