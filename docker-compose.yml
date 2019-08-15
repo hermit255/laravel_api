@@ -28,4 +28,5 @@ services:
       context: ./php
     working_dir: ${SRC_DIR_CONTAINTER}
     volumes:
+      - ./php/conf.d:/usr/local/etc/php/conf.d
       - ${SRC_DIR_HOST}:${SRC_DIR_CONTAINTER}
