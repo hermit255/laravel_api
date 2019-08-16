@@ -32,7 +32,6 @@ services:
       - ${SRC_DIR_HOST}:${SRC_DIR_CONTAINTER}
   mysql:
       image: mysql:5.7
-      container_name: db-host
       environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: database
@@ -46,3 +45,16 @@ services:
       - ./mysql/sql:/docker-entrypoint-initdb.d
       ports:
       - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=docker
+      - PMA_PASSWORD=docker
+    links:
+      - mysql
+    ports:
+       - 8080:80
+    volumes:
+       - /sessions
