@@ -14,7 +14,9 @@ class CreatePrefecturesTable extends Migration
     public function up()
     {
         Schema::create('prefectures', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->integer('id')->primary('id')->comment('JIS X 0401準拠');
+            $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
