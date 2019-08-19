@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Prefecture;
 use App\Http\Controllers\AppController;
+use App\Exceptions\MyException;
 
 class PrefecturesController extends AppController
 {
@@ -30,10 +31,7 @@ class PrefecturesController extends AppController
             $responseBody = json_encode($shapedArray);
             $responseHeaders['X-Api-Status'] = '0';
         } else {
-            $responseBody = '';
-            $responseHeaders['X-Api-Status'] = '1';
-            $responseHeaders['X-Api-Error-Code'] = '99';
-            $responseStatus = 210;
+            throw new MyException();
         }
 
         return response($responseBody, $responseStatus)
