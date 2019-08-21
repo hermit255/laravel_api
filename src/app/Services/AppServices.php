@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class AppService
+abstract class AppService
 {
     /**
      * 共通処理
@@ -12,24 +12,13 @@ class AppService
     protected $headers = [];
 
     /**
-     * @return mixed レスポンスボディ
+     * @return Illuminate\Http\Response
      */
-    public function getBody()
+    public function getResponse()
     {
-        return $this->body;
-    }
-    /**
-     * @return int レスポンスステータス
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-    /**
-     * @return array レスポンスヘッダー
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
+        return response(
+            $this->body,
+            $this->status
+        )->withHeaders($this->headers);
     }
 }

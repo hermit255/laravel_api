@@ -3,25 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppController;
-use App\Services\PrefectureService;
 
 class PrefecturesController extends AppController
 {
-    public function __construct(PrefectureService $service)
-    {
-        $this->service = $service;
-    }
     /**
      * 都道府県データ全件をJsonで返す
-     * @param App\Services\PrefectureService
-     * @return Illuminate\Http\Response
+     * @return Illuminate\Http\Response text/json
      */
     public function list()
     {
-        $this->service->list();
-        return response(
-            $this->service->getBody(),
-            $this->service->getStatus()
-        )->withHeaders($this->service->getHeaders());
+        /*
+         * 開発方針
+         *   1. コントローラーメソッド:1サービスクラスの対応関係でビジネスロジックを処理させる
+         *   2. make()に与えるクラス名とrun()に与える引数だけでコントローラー間の差異を表現する
+         *
+         * UIからの入力受け取り+レスポンスを返す窓口となること以外は一切行わない
+        */
+
+        // どのサービスを使うか宣言
+        $service = app()->make('App\Services\PrefectureListService');
+        // run()の実装で必要なDIを行う
+        $service->run();
+        // レスポンスはserviceに丸投げする
+        return $service->getResponse();
     }
 }

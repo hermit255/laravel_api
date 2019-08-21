@@ -13,7 +13,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('Prefecture', function ($app) {
+            // モック切り替えスイッチ
+            $isMock = false;
+
+            if ($isMock == true) {
+                // mockery
+                $items = [];
+                for ($i = 1; $i <= 47; $i++) {
+                    $item = new \stdClass();
+                    $item->id = $i;
+                    $item->name = 'mock'. $i;
+                    $items[] = $item;
+                }
+                $mock_data = \Illuminate\Support\Collection::make($items);
+                $prefectures = \Mockery::mock('App\Prefecture');
+                // all()メソッドを実行すると$mock_dataを返却するようなCollectionオブジェクトのモックを定義
+                $prefectures->shouldReceive('all')->andReturn($mock_data);
+            } else {
+                // real
+                $prefectures = new \App\Prefecture;
+            }
+
+            return $prefectures;
+        });
     }
 
     /**
