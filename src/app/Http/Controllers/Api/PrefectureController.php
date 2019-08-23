@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\AppController;
+use App\Http\Controllers\ApiController;
 
-class PrefecturesController extends AppController
+class PrefecturesController extends ApiController
 {
     /**
      * 都道府県データ全件をJsonで返す
-     * @return Illuminate\Http\Response text/json
+     * @return Illuminate\Http\Response
      */
-    public function list()
+    public function list() : \Illuminate\Http\JsonResponse
     {
         /*
          * 開発方針
@@ -24,7 +24,7 @@ class PrefecturesController extends AppController
         $service = app()->make('App\Services\PrefectureListService');
         // run()の実装で必要なDIを行う
         $service->run();
-        // レスポンスはserviceに丸投げする
-        return $service->getResponse();
+        // serviceをもとにレスポンスを作る
+        return $this->getJsonResponse($service);
     }
 }

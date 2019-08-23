@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Services\AppService;
 use App\Contracts\Service;
 use App\Exceptions\MyException;
 
-class PrefectureListService extends AppService implements Service
+class PrefectureListService extends ApiService implements Service
 {
     /**
      * 処理実行
      * @return void
+     * @throws App\Exceptions\MyException
      */
     public function run()
     {
@@ -19,46 +19,46 @@ class PrefectureListService extends AppService implements Service
         $allPrefectures = $this->getAllPrefectures($prefectureModel);
 
         // 取得結果に応じたレスポンスを作成する(依存する項目を注入すること)
-        $this->body = $this->getBody($allPrefectures);
-        $this->status = $this->getStatus($allPrefectures);
-        $this->headers = $this->getHeaders();
+        $this->setBody($allPrefectures);
+        $this->setStatus($allPrefectures);
+        $this->setHeaders();
     }
     /**
-     * $this->bodyの生成基準を明示する
-     * @return mixed レスポンスボディ
+     * $this->bodyの依存を明示する
+     * @return void
      */
-    private function getBody($allPrefectures)
+    private function setBody($allPrefectures)
     {
-        return $allPrefectures;
+        $this->body = $allPrefectures;
     }
     /**
-     * $this->statusの生成基準を明示する
-     * @return int レスポンスステータス
+     * $this->statusの依存を明示する
+     * @return void
      */
-    private function getStatus($allPrefectures)
+    private function setStatus($allPrefectures)
     {
         if ( $this->prefecturesValidation($allPrefectures) ) {
-            return 200;
+            $this->status = 200;
         } else {
             // 取得した都道府県が基準に合わなければ204を返す
-            return 204;
+            $this->status = 204;
 
         }
     }
     /**
-     * $this->headersの生成基準を明示する
-     * @return array レスポンスヘッダー
+     * $this->headersの依存を明示する
+     * @return int レスポンスステータス
      */
-    private function getHeaders()
+    private function setHeaders()
     {
-        return [];
+        $this->headers = [];
     }
     /**
      * 処理実行
      * @param App\Prefecture
      * @return void
      */
-    public function getAllPrefectures($prefectureModel)
+    private function getAllPrefectures($prefectureModel)
     {
         $raw = $prefectureModel::all(); /* Illuminate\Support\Collection */
         $shapedArray = $raw->toArray();

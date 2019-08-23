@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Prefecture;
-use App\Http\Controllers\AppController;
+use App\Http\Controllers\Controller;
 
-class PrefecturesController extends AppController
+class PrefecturesController extends Controller
 {
     /**
      *
