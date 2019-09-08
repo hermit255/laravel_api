@@ -18,6 +18,10 @@
                         <a href="prefectures/list">prefectures_list</a>
                         source: <a href="api/prefectures">api_prefectures_list</a>
                     </li>
+                    <li>
+                        <a href="calendar?format=d">calendar</a>
+                        source: <a href="api/calendar?format=y-m-d">api_calendar</a>
+                    </li>
                 </ul>
             </div>
         </div>

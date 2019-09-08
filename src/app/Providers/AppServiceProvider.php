@@ -20,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
         });
         // カレンダー
         $this->app->bind(\App\Contracts\GetCalendarInterface::class, function () {
-            return new \App\Mock\GetCalendarInterface;
-            // return new \App\UseCase\GetCalendarInterface;
+            return new \App\Mock\GetCalendarUseCase;
+            // return new \App\UseCase\GetCalendarUseCase;
         });
 
         $this->app->bind(\App\Prefecture::class, function ($app) {

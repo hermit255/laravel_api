@@ -16,3 +16,4 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('prefectures/list', 'PrefecturesController@list');
+Route::get('calendar', 'CalendarController@index');
