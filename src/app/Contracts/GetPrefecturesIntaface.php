@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface GetPrefecturesIntaface
+interface GetPrefecturesInterface
 {
     public function __invoke($dbPrefecture);
 }

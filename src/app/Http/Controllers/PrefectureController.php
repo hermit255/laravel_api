@@ -8,10 +8,9 @@ use App\Http\Controllers\Controller;
 class PrefecturesController extends Controller
 {
     /**
-     *
-     * @return Illuminate\Support\Facades\View
+     * 都道府県表示テスト
      */
-    public function list()
+    public function list() : \Illuminate\View\View
     {
         // cURLコマンドを使うのが正統派だが、コントローラーとして呼び出すこともできる
         $response = app()->call('App\Http\Controllers\Api\PrefecturesController@list');

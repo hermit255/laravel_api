@@ -5,14 +5,14 @@ namespace App\Mock;
 use App\Contracts\UseCase;
 use App\Exceptions\MyException;
 
-class GetPrefecturesUseCase implements \App\Contracts\GetPrefecturesIntaface
+class GetPrefecturesUseCase implements \App\Contracts\GetPrefecturesInterface
 {
     /**
      * 処理実行
      * @return void
      * @throws App\Exceptions\MyException
      */
-    public function __invoke($dbPrefecture)
+    public function __invoke($dbPrefecture) : Array
     {
        // mockery
        $items = [];
@@ -22,6 +22,7 @@ class GetPrefecturesUseCase implements \App\Contracts\GetPrefecturesIntaface
            $item->name = 'mock'. $i;
            $items[] = $item;
        }
-       return \Illuminate\Support\Collection::make($items);
+       $collection = \Illuminate\Support\Collection::make($items);
+       return $collection->toArray();
     }
 }

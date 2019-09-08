@@ -9,10 +9,10 @@ class PrefecturesController extends ApiController
 {
     /**
      * 都道府県データ全件をJsonで返す
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function list(
-        \App\Contracts\GetPrefecturesIntaface $prefectureList,
+        \App\Contracts\GetPrefecturesInterface $prefectureList,
         Prefecture $dbPrefecture
     ) : \Illuminate\Http\JsonResponse
     {

@@ -13,9 +13,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(\App\Contracts\GetPrefecturesIntaface::class, function () {
+        // 都道府県データ
+        $this->app->bind(\App\Contracts\GetPrefecturesInterface::class, function () {
             // return new \App\Mock\GetPrefecturesUseCase;
             return new \App\UseCase\GetPrefecturesUseCase;
+        });
+        // カレンダー
+        $this->app->bind(\App\Contracts\GetCalendarInterface::class, function () {
+            return new \App\Mock\GetCalendarInterface;
+            // return new \App\UseCase\GetCalendarInterface;
         });
 
         $this->app->bind(\App\Prefecture::class, function ($app) {
@@ -37,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
                 $prefectures->shouldReceive('all')->andReturn($mock_data);
             } else {
                 // real
+                $prefectures = new \App\Prefecture;
             }
 
             return $prefectures;

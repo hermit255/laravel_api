@@ -5,14 +5,14 @@ namespace App\UseCase;
 use App\Contracts\UseCase;
 use App\Exceptions\MyException;
 
-class GetPrefecturesUseCase extends ApiUseCase implements \App\Contracts\GetPrefecturesIntaface
+class GetPrefecturesUseCase extends ApiUseCase implements \App\Contracts\GetPrefecturesInterface
 {
     /**
      * 処理実行
-     * @return void
+     * @return array
      * @throws App\Exceptions\MyException
      */
-    public function __invoke($dbPrefecture)
+    public function __invoke($dbPrefecture) : Array
     {
         // DBの都道府県データから全件取得する
         $allPrefectures = $this->getAllPrefectures($dbPrefecture);
