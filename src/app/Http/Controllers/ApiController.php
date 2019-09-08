@@ -6,18 +6,26 @@ use App\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
-    /**
-     * JSON形式のレスポンスを返す
-     * @param App\Contracts\Service
-     */
     public function __construct()
     {
     }
-    public function getJsonResponse($service) : \Illuminate\Http\JsonResponse
+
+    /**
+     * JSON形式のレスポンスを返す
+     * @param array | object, integer, array, integer
+     */
+    public function getJsonResponse(
+        $body,
+        $status = 200,
+        $headers = array(),
+        $option = JSON_UNESCAPED_UNICODE
+    ) : \Illuminate\Http\JsonResponse
     {
         return response()->json(
-            $service->getBody(),
-            $service->getStatus()
-        )->withHeaders($service->getHeaders());
+            $body,
+            $status,
+            $headers,
+            $option
+        );
     }
 }

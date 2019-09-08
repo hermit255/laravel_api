@@ -13,9 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('Prefecture', function ($app) {
+        $this->app->bind(\App\Contracts\GetPrefecturesIntaface::class, function () {
+            // return new \App\Mock\GetPrefecturesUseCase;
+            return new \App\UseCase\GetPrefecturesUseCase;
+        });
+
+        $this->app->bind(\App\Prefecture::class, function ($app) {
             // モック切り替えスイッチ
-            $isMock = false;
+            $isMock = true;
 
             if ($isMock == true) {
                 // mockery
@@ -23,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
                 for ($i = 1; $i <= 47; $i++) {
                     $item = new \stdClass();
                     $item->id = $i;
-                    $item->name = 'mock'. $i;
+                    $item->name = 'mock_db'. $i;
                     $items[] = $item;
                 }
                 $mock_data = \Illuminate\Support\Collection::make($items);
@@ -32,7 +37,6 @@ class AppServiceProvider extends ServiceProvider
                 $prefectures->shouldReceive('all')->andReturn($mock_data);
             } else {
                 // real
-                $prefectures = new \App\Prefecture;
             }
 
             return $prefectures;

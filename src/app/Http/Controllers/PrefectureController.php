@@ -14,8 +14,11 @@ class PrefecturesController extends Controller
     public function list()
     {
         // cURLコマンドを使うのが正統派だが、コントローラーとして呼び出すこともできる
-        $wrapperApi = app()->make('App\Http\Controllers\Api\PrefecturesController');
-        $response = $wrapperApi->list(new \App\Services\PrefectureListService);
+        $Controller = app()->make('App\Http\Controllers\Api\PrefecturesController');
+        $useCase = app()->make('App\Contracts\GetPrefecturesIntaface');
+        $dbPrefectures = app()->make('App\Prefecture');
+
+        $response = $Controller->list($useCase, $dbPrefectures);
         $prefectures = json_decode($response->content());
         return view('prefectures', ['prefectures' => $prefectures]);
     }
