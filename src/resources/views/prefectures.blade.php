@@ -82,20 +82,18 @@
             <div class="content">
                 <div class="title m-b-md">
                     @if (empty($prefectures))
-                    テスト失敗
+                    <p style="font-size: 18px;">都道府県リストの取得に失敗しました</p>
                     @else
-                    テスト成功
                     <p style="font-size: 18px;">都道府県リストの取得に成功しました</p>
                     @endif
                 </div>
                 <table>
                     @if (empty($prefectures))
-                    <p style="font-size: 18px;"> 取得結果が不正です </p>
                     @else
-                    @foreach ($prefectures as $id => $name)
+                    @foreach ($prefectures as $prefecture)
                     <tr>
-                        <td> {{ $id }} </td>
-                        <td> {{ $name }} </td>
+                        <td> {{ $prefecture->id }} </td>
+                        <td> {{ $prefecture->name }} </td>
                     </tr>
                     @endforeach
                     @endif

@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Prefecture;
-use App\Http\Controllers\AppController;
+use App\Http\Controllers\Controller;
 
-class PrefecturesController extends AppController
+class PrefecturesController extends Controller
 {
     /**
-     *
-     * @return Illuminate\Support\Facades\View
+     * 都道府県表示テスト
      */
-    public function list()
+    public function list() : \Illuminate\View\View
     {
         // cURLコマンドを使うのが正統派だが、コントローラーとして呼び出すこともできる
-        $wrapperApi = app()->make('App\Http\Controllers\Api\PrefecturesController');
-        $response = $wrapperApi->list(new \App\Prefecture());
+        $response = app()->call('App\Http\Controllers\Api\PrefecturesController@list');
         $prefectures = json_decode($response->content());
         return view('prefectures', ['prefectures' => $prefectures]);
     }
