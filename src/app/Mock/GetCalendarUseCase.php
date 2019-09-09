@@ -5,89 +5,80 @@ namespace App\Mock;
 use App\Contracts\UseCase;
 use App\Exceptions\MyException;
 
-class GetCalendarUsecase implements \App\Contracts\GetCalendarInterface
+class GetCalendarUseCase implements \App\Contracts\GetCalendarInterface
 {
-    private $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
     /**
      * 処理実行
      * @return array
      * @param
      * @throws App\Exceptions\MyException
      */
-    public function __invoke(
-        int $year = null,
-        int $month = null,
-        string $format = 'Y/m/d',
-        int $startWeekday = 0
-    ) : Array
+    public function __invoke() : Array
     {
         // 1.{指定月}の1日を\DateTimeImmutable取得
-        $firstDayOfMonth = $this->getFirstDayOfMonth($year, $month);
+        $firstDayOfMonth = $this->getFirstDayOfMonth();
         // 2.{1の日付}が開始曜日でなければ開始曜日まで遡って取得
-        $firstDayOfPage = $this->getFirstDayOfPage($firstDayOfMonth, $startWeekday);
+        $firstDayOfPage = $this->getFirstDayOfPage();
         // 3.{指定月}の最終日を取得
-        $lastDayOfMonth = $this->getLastDayOfMonth($firstDayOfMonth);
+        $lastDayOfMonth = $this->getLastDayOfMonth();
         // 4.{2の日付}が{開始曜日}-1でなければ{開始曜日}-1まで取得
-        $lastDayOfPage = $this->getLastDayOfPage($lastDayOfMonth, $startWeekday);
+        $lastDayOfPage = $this->getLastDayOfPage();
         // 5.{2の日付}から{6の日付}まで7日単位で配列として順に変数へ格納
         // 6.{5の変数}を返却
-        return $this->getPage($firstDayOfPage, $lastDayOfPage, $format);
+        return $this->getPage();
     }
     /**
      * @return datetimeimmutable
      */
-    private function getFirstDayOfMonth($year, $month) : \DateTimeImmutable
+    private function getFirstDayOfMonth() : \DateTimeImmutable
     {
-        $year = (!empty($year) || is_numeric($year)) ? $year : date('Y');
-        $month = (!empty($month) || is_numeric($month)) ? $month : date('m');
-        return new \DateTimeImmutable($year. '-'. $month);
+        return new \DateTimeImmutable('2019/9/1');
     }
     /**
      * @return datetimeimmutable
      */
-    private function getLastDayOfMonth(\DateTimeImmutable $firstDayOfMonth) : \DateTimeImmutable
+    private function getLastDayOfMonth() : \DateTimeImmutable
     {
-        return $firstDayOfMonth->modify('last day of this months');
+        return new \DateTimeImmutable('2019/9/30');
     }
     /**
      * @return datetimeimmutable
      */
-    private function getFirstDayOfPage(\DateTimeImmutable $firstDayOfMonth, int $startWeekday) : \DateTimeImmutable
+    private function getFirstDayOfPage() : \DateTimeImmutable
     {
-        $diff  = ($firstDayOfMonth->format('w') - $startWeekday + 7) % 7;
-        return $firstDayOfMonth->modify("-${diff} days");
+        return new \DateTimeImmutable('2019/8/26');
     }
     /**
      * @return datetimeimmutable
      */
-    private function getLastDayOfPage(\DateTimeImmutable $lastDayOfMonth, int $startWeekday) : \DateTimeImmutable
+    private function getLastDayOfPage() : \DateTimeImmutable
     {
-        $lastWeekday = (($startWeekday - 1) + 7) % 7;
-        $diff  = ($lastWeekday - $lastDayOfMonth->format('w') + 7) % 7;
-        // 初日との間隔取得のため1秒足しておく
-        return $lastDayOfMonth->modify("+${diff} days + 1 second");
+        return new \DateTimeImmutable('2019/10/6');
     }
     /**
      * カレンダーページを取得する
      * @return datePeriod
      */
-    private function getPage(\DateTimeImmutable $firstDayOfPage, \DateTimeImmutable $lastDayOfPage, string $format) : Array
+    private function getPage() : Array
     {
-        $interval = new \DateInterval('P1D');
-        $period = new \DatePeriod($firstDayOfPage, $interval, $lastDayOfPage);
-        $rows = [];
-        foreach($period as $index => $date) {
-            $content = new \stdClass();
-            $content->date = $date->format($format);
-            $content->weekDay = $this->weekdays[$date->format('w')];
-            $content->year = $date->format('Y');
-            $content->month = $date->format('n');
-            $content->day = $date->format('j');
-
-            // ゼロ除算しないように1加算
-            $rowNumber = ceil(($index + 1) / 7);
-            $rows[$rowNumber][] = $content;
-        }
-        return $rows;
+        $dummy = (object) [
+            'date' => '9/1',
+            'weekDay' => '日',
+            'year' => '2019',
+            'month' => '9',
+            'day' => '1',
+        ];
+        return [
+            // 1行目
+            [ $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy ],
+            // 2行目
+            [ $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy ],
+            // 3行目
+            [ $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy ],
+            // 4行目
+            [ $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy ],
+            // 5行目
+            [ $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy ],
+        ];
     }
 }
