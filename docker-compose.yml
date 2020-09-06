@@ -31,7 +31,6 @@ services:
     volumes:
       #- ./php/conf.d/my.ini:./php/conf.d/my.ini
       - ${SRC_DIR_HOST}:${SRC_DIR_CONTAINTER}
-    #user: 1000:1000
   mysql:
       image: mysql:5.7
       environment:
